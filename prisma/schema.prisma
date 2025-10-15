@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  nama       String   @unique
+  role       String
+  created_at DateTime @default(now())
+
+  @@map("user")
+}
+
+model DataKonsumen {
+  id           Int      @id @default(autoincrement())
+  nama_pemesan String   @unique
+  alamat       String
+  provinsi     String
+  kabupaten    String
+  kecamatan    String
+  desa         String
+  nomer_hp     Int
+  konten       String
+  created_at   DateTime @default(now())
+
+  @@map("data_konsumen")
+}
+
+model DataPesanan {
+  id                  Int      @id @default(autoincrement())
+  id_data_konsumen    Int
+  kode_pesanan        String   @unique
+  kode_produk         String
+  jenis_produk        String
+  warna_dasar         String
+  ukuran              String
+  lengan              String
+  variasi             String
+  jumlah_pesanan      Int
+  catatan_konsumen    String
+  harga_satuan        Int
+  total_harga         Int
+  created_at          DateTime @default(now())
+
+  @@map("data_pesanan")
+}
+
+// Tambahkan model lainnya sesuai kebutuhan aplikasi Anda
