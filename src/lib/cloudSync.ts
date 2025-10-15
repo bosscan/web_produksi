@@ -6,15 +6,25 @@ if (typeof window !== 'undefined') {
   console.info('[cloudSync] enabled =', enabled, 'url =', import.meta.env.VITE_SUPABASE_URL ? 'set' : 'missing');
 }
 
-// Keys to sync and their table names
+// Keys to sync and their mirror table names in Supabase (avoid clashing with domain tables)
+// Each mirror table schema: unique_key TEXT PRIMARY KEY, payload JSONB NOT NULL, created_at TIMESTAMPTZ DEFAULT now(), updated_at TIMESTAMPTZ DEFAULT now()
 const TABLES: Record<string, string> = {
-  'antrian_input_desain': 'antrian_input_desain',
-  'design_queue': 'design_queue',
-  'keranjang': 'keranjang',
-  'plotting_rekap_bordir_queue': 'plotting_rekap_bordir_queue',
-  'spk_pipeline': 'spk_pipeline',
-  'method_rekap_bordir': 'method_rekap_bordir',
-  'spk_orders': 'spk_orders'
+  // market/method
+  'antrian_input_desain': 'sync_antrian_input_desain',
+  'design_queue': 'sync_design_queue',
+  'keranjang': 'sync_keranjang',
+  'plotting_rekap_bordir_queue': 'sync_plotting_rekap_bordir_queue',
+  'spk_pipeline': 'sync_spk_pipeline',
+  'method_rekap_bordir': 'sync_method_rekap_bordir',
+  'spk_orders': 'sync_spk_orders',
+  // optional: databases for reports/catalogs
+  'database_produk': 'sync_database_produk',
+  'database_konsumen': 'sync_database_konsumen',
+  'database_trend': 'sync_database_trend',
+  'database_sebaran': 'sync_database_sebaran',
+  // money
+  'omset_pendapatan': 'sync_omset_pendapatan',
+  'pelunasan_transaksi': 'sync_pelunasan_transaksi',
 };
 
 function djb2(str: string) {
